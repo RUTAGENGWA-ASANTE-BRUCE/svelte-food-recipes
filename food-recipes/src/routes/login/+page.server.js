@@ -1,32 +1,30 @@
-export async function post({ request }) {
-	const body = await request.formData();
-	const [emailField, passwordField] = body;
+import { invalid } from '@sveltejs/kit';
 
-	const email = emailField[1];
-	const password = passwordField[1];
+/** @type {import('./$types').Actions} */
+export const actions = {
+	login: async ({ cookies, request }) => {
+		const data = await request.formData();
+		const email = data.get('email');
+		const password = data.get('password');
 
-	let errors = [];
-	if (!email) {
-		errors.push({
-			message: 'Email field is required.'
-		});
-	}
+		let errors = [];
 
-	if (!password) {
-		errors.push({
-			message: 'Password field is required.'
-		});
-	}
+		if (!email) {
+			return invalid(400, { email, emailMissing: true });
+		}
 
-	if (errors.length > 0) {
+		if (!password) {
+			return invalid(400, { password, passwordMissing: true });
+		}
+        // if (!user || user.password !== hash(password)) {
+		// 	return invalid(400, { email, incorrect: true });
+		// }
 		return {
-			status: 404,
-			body: { errors }
+			success: true
 		};
-	}
 
-	return {
-		headers: { Location: '/' },
-		status: 302
-	};
-}
+	},
+	register: async (event) => {
+		// TODO register the user
+	}
+};

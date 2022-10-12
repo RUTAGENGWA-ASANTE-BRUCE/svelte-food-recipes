@@ -1,17 +1,13 @@
 <script>
-	export let errors = [];
-	export let result;
-
-
+  /** @type {import('./$types').ActionData} */
+  export let form;
 </script>
-{#if errors.length > 0}
-	{#each errors as error}
-		<p>{error.message}</p>
-	{/each}
-{/if}
-
+{#if form?.emailMissing}<p class="error">The email field is required</p>{/if}
+{#if form?.passwordMissing}<p class="error">The passwrod field is required</p>{/if}
+{#if form?.incorrect}<p class="error">Invalid credentials!</p>{/if}
 <div class="flex justify-center">
-	<form method="post" class="p-4 mt-20 rounded-lg border m-auto">
+	<form method="post" action="?/login" class="p-4 mt-20 rounded-lg border m-auto">
+
 		<h1 class="text-center text-xl">Login</h1>
 		<div class="my-5 w-full">
 			<label for="email">Email</label>
